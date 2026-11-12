@@ -1,0 +1,47 @@
+{
+  "request": {
+    "url": "http://127.0.0.1:8765/api/v1/sync/?last_pulled_at=1794510029989&schema_version=3&migration=null",
+    "lastPulledAt": 1794510029989,
+    "schemaVersion": 3,
+    "migration": null
+  },
+  "response": {
+    "status": 200,
+    "json": {
+      "changes": {
+        "patient_sessions": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "nurses": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "patient_session_nurses": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "patients": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "ccp_sessions": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "follow_up_outcomes": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        }
+      },
+      "timestamp": 1794510030143
+    },
+    "bytes": 385
+  }
+}

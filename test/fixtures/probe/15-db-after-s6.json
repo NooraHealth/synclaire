@@ -1,0 +1,179 @@
+{
+  "user_version": 3,
+  "journal_mode": "delete",
+  "ddl": [
+    {
+      "type": "index",
+      "name": "local_storage_key_index",
+      "sql": "CREATE INDEX \"local_storage_key_index\" on \"local_storage\" (\"key\")"
+    },
+    {
+      "type": "index",
+      "name": "nurses__status",
+      "sql": "CREATE INDEX \"nurses__status\" on \"nurses\" (\"_status\")"
+    },
+    {
+      "type": "index",
+      "name": "patient_session_nurses__status",
+      "sql": "CREATE INDEX \"patient_session_nurses__status\" on \"patient_session_nurses\" (\"_status\")"
+    },
+    {
+      "type": "index",
+      "name": "patient_sessions__status",
+      "sql": "CREATE INDEX \"patient_sessions__status\" on \"patient_sessions\" (\"_status\")"
+    },
+    {
+      "type": "table",
+      "name": "local_storage",
+      "sql": "CREATE TABLE \"local_storage\" (\"key\" varchar(16) primary key not null, \"value\" text not null)"
+    },
+    {
+      "type": "table",
+      "name": "nurses",
+      "sql": "CREATE TABLE \"nurses\" (\"id\" primary key, \"_changed\", \"_status\", \"number\", \"state\", \"name\", \"designation\", \"facility\", \"facility_type\", \"condition_area\", \"date_of_tot\", \"account_status\", \"privacy_consent_timestamp\")"
+    },
+    {
+      "type": "table",
+      "name": "patient_session_nurses",
+      "sql": "CREATE TABLE \"patient_session_nurses\" (\"id\" primary key, \"_changed\", \"_status\", \"session_id\", \"nurse_id\")"
+    },
+    {
+      "type": "table",
+      "name": "patient_sessions",
+      "sql": "CREATE TABLE \"patient_sessions\" (\"id\" primary key, \"_changed\", \"_status\", \"date\", \"time_slot\", \"created_at\", \"updated_at\", \"created_by\", \"location\", \"class_type\", \"no_of_participants\", \"no_of_estimated_res_signups\", \"no_of_patients\", \"no_of_caregivers\", \"session_photo_count\", \"feedback\")"
+    }
+  ],
+  "local_storage": [
+    {
+      "key": "__watermelon_last_pulled_schema_version",
+      "value": "3"
+    },
+    {
+      "key": "__watermelon_last_pulled_at",
+      "value": "1794510034005"
+    }
+  ],
+  "rows": {
+    "patient_sessions": [
+      {
+        "id": "2a94f8ce-c7fe-4075-a370-1f704fef09e0",
+        "_changed": "",
+        "_status": "synced",
+        "date": 1793923502709,
+        "time_slot": "",
+        "created_at": 1793872119272,
+        "updated_at": 1794510031177,
+        "created_by": "d5543032-cf9a-4ef6-859b-c1827544b494",
+        "location": "Hall",
+        "class_type": "c5c8651a-a959-406c-8dee-c7fc06113077",
+        "no_of_participants": 99,
+        "no_of_estimated_res_signups": 25,
+        "no_of_patients": 66,
+        "no_of_caregivers": 12,
+        "session_photo_count": 0,
+        "feedback": "device edit S5"
+      },
+      {
+        "id": "42794746-415d-4754-a141-4ff6d1663747",
+        "_changed": "",
+        "_status": "synced",
+        "date": 1794510029709,
+        "time_slot": "",
+        "created_at": 0,
+        "updated_at": 0,
+        "created_by": "d5543032-cf9a-4ef6-859b-c1827544b494",
+        "location": "Hall",
+        "class_type": "c5c8651a-a959-406c-8dee-c7fc06113077",
+        "no_of_participants": 12,
+        "no_of_estimated_res_signups": 3,
+        "no_of_patients": 0,
+        "no_of_caregivers": 0,
+        "session_photo_count": 0,
+        "feedback": null
+      }
+    ],
+    "nurses": [
+      {
+        "id": "d5543032-cf9a-4ef6-859b-c1827544b494",
+        "_changed": "",
+        "_status": "synced",
+        "number": "+916820859518",
+        "state": "tamil-nadu",
+        "name": "Renamed On Device",
+        "designation": "221820fb-2ac6-4440-b0e1-5f8539f8239b",
+        "facility": "42692ea2-2b11-4ccc-a9c3-b7e3dbdf416f",
+        "facility_type": "3baf75c1-bc7b-4067-9d23-cc6e3a50d1ce",
+        "condition_area": "3781c92f-0b5c-4eea-aa5e-8d7f1a328bfe",
+        "date_of_tot": 1794434293164,
+        "account_status": "active",
+        "privacy_consent_timestamp": null
+      },
+      {
+        "id": "bbcdf4cc-feb2-4258-8164-abcd3d485156",
+        "_changed": "",
+        "_status": "synced",
+        "number": "+917504811698",
+        "state": "tamil-nadu",
+        "name": "Vasana Sarraf",
+        "designation": "8391e097-58e7-4347-a070-f976484914b3",
+        "facility": "42692ea2-2b11-4ccc-a9c3-b7e3dbdf416f",
+        "facility_type": "3baf75c1-bc7b-4067-9d23-cc6e3a50d1ce",
+        "condition_area": "eb18678c-ae81-481e-98de-58b12822a322",
+        "date_of_tot": 1793983122137,
+        "account_status": "active",
+        "privacy_consent_timestamp": null
+      }
+    ],
+    "patient_session_nurses": [
+      {
+        "id": "7f87c8d8-692a-4998-931c-b91dd18ea914",
+        "_changed": "",
+        "_status": "synced",
+        "session_id": "2a94f8ce-c7fe-4075-a370-1f704fef09e0",
+        "nurse_id": "d5543032-cf9a-4ef6-859b-c1827544b494"
+      },
+      {
+        "id": "da7baba8-ee66-4c87-81c1-553229177b4d",
+        "_changed": "",
+        "_status": "synced",
+        "session_id": "414c81c8-c914-40db-8974-0a7db883c60d",
+        "nurse_id": "bbcdf4cc-feb2-4258-8164-abcd3d485156"
+      },
+      {
+        "id": "38930c8e-5366-42da-8968-4cb72776e683",
+        "_changed": "",
+        "_status": "synced",
+        "session_id": "414c81c8-c914-40db-8974-0a7db883c60d",
+        "nurse_id": "d5543032-cf9a-4ef6-859b-c1827544b494"
+      },
+      {
+        "id": "12f7dfa8-a5ba-4ab4-98b9-d949667d5862",
+        "_changed": "",
+        "_status": "synced",
+        "session_id": "14001bf2-e896-46c0-880c-76e2fcbd8d5c",
+        "nurse_id": "d5543032-cf9a-4ef6-859b-c1827544b494"
+      },
+      {
+        "id": "e2e475cf-8078-45cc-b69f-38071fae609f",
+        "_changed": "",
+        "_status": "synced",
+        "session_id": "7c057257-80c9-44a1-9f75-b285362f24cf",
+        "nurse_id": "d5543032-cf9a-4ef6-859b-c1827544b494"
+      },
+      {
+        "id": "588eff09-0814-4c05-a262-fb4216991133",
+        "_changed": "",
+        "_status": "synced",
+        "session_id": "42794746-415d-4754-a141-4ff6d1663747",
+        "nurse_id": "d5543032-cf9a-4ef6-859b-c1827544b494"
+      },
+      {
+        "id": "5f2f6429-eb28-436d-ac85-52384cc1e877",
+        "_changed": "",
+        "_status": "synced",
+        "session_id": "42794746-415d-4754-a141-4ff6d1663747",
+        "nurse_id": "bbcdf4cc-feb2-4258-8164-abcd3d485156"
+      }
+    ]
+  }
+}

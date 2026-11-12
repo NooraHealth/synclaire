@@ -1,0 +1,64 @@
+{
+  "request": {
+    "url": "http://127.0.0.1:8765/api/v1/sync/?last_pulled_at=1794510034005&schema_version=3&migration=null",
+    "lastPulledAt": 1794510034005,
+    "schemaVersion": 3,
+    "migration": null
+  },
+  "response": {
+    "status": 200,
+    "json": {
+      "changes": {
+        "patient_sessions": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "nurses": {
+          "created": [],
+          "updated": [
+            {
+              "id": "bbcdf4cc-feb2-4258-8164-abcd3d485156",
+              "name": "Vasana Sarraf",
+              "designation": "8391e097-58e7-4347-a070-f976484914b3",
+              "facility": "42692ea2-2b11-4ccc-a9c3-b7e3dbdf416f",
+              "number": "+917504811698",
+              "condition_area": "eb18678c-ae81-481e-98de-58b12822a322",
+              "department": "eb18678c-ae81-481e-98de-58b12822a322",
+              "state": "tamil-nadu",
+              "province": null,
+              "account_status": "active",
+              "date_of_tot": 1793983122137,
+              "privacy_consent_timestamp": null,
+              "wa_consent_at": null,
+              "facility_type": "3baf75c1-bc7b-4067-9d23-cc6e3a50d1ce"
+            }
+          ],
+          "deleted": []
+        },
+        "patient_session_nurses": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "patients": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "ccp_sessions": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "follow_up_outcomes": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        }
+      },
+      "timestamp": 1794510034112
+    },
+    "bytes": 889
+  }
+}

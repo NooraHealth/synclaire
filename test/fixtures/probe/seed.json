@@ -1,0 +1,15 @@
+{
+  "token": "6397af486b7ba7e0c8f9142478b6aecb3dd13e0b",
+  "colleague_token": "91ab4b28e980e5829b34fa368059071006ed484e",
+  "me": "d5543032-cf9a-4ef6-859b-c1827544b494",
+  "colleague": "bbcdf4cc-feb2-4258-8164-abcd3d485156",
+  "outsider": "a3b78b83-ec12-44b4-8687-3453930a3e24",
+  "class_type": "c5c8651a-a959-406c-8dee-c7fc06113077",
+  "sessions": {
+    "own": "2a94f8ce-c7fe-4075-a370-1f704fef09e0",
+    "own2": "7c057257-80c9-44a1-9f75-b285362f24cf",
+    "tagged_by_colleague": "414c81c8-c914-40db-8974-0a7db883c60d",
+    "not_mine": "178473d6-e53d-4125-a089-31dc8ba28c3f",
+    "deleted": "14001bf2-e896-46c0-880c-76e2fcbd8d5c"
+  }
+}

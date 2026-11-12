@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+*.db
+*.db-wal
+*.db-shm
+.tmp/
+test/integration/.state/
+example/ios/
+example/android/
+example/.expo/
+example/node_modules/

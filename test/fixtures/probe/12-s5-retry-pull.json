@@ -1,0 +1,77 @@
+{
+  "request": {
+    "url": "http://127.0.0.1:8765/api/v1/sync/?last_pulled_at=1794510030143&schema_version=3&migration=null",
+    "lastPulledAt": 1794510030143,
+    "schemaVersion": 3,
+    "migration": null
+  },
+  "response": {
+    "status": 200,
+    "json": {
+      "changes": {
+        "patient_sessions": {
+          "created": [],
+          "updated": [
+            {
+              "id": "2a94f8ce-c7fe-4075-a370-1f704fef09e0",
+              "feedback": "device edit S4",
+              "location": "Hall",
+              "no_of_participants": 99,
+              "no_of_patients": 66,
+              "no_of_caregivers": 12,
+              "total_no_of_caregivers": 12,
+              "no_of_male_caregivers": 56,
+              "no_of_male_participants": null,
+              "no_of_estimated_res_signups": 25,
+              "no_of_anc_mothers": 83,
+              "no_of_pnc_mothers": 61,
+              "no_of_ncd_patients": null,
+              "condition_area": null,
+              "intervention_type": null,
+              "class_type": "c5c8651a-a959-406c-8dee-c7fc06113077",
+              "health_topic": null,
+              "supporting_activity": null,
+              "time_slot": null,
+              "created_by": "d5543032-cf9a-4ef6-859b-c1827544b494",
+              "session_photo_count": 0,
+              "res_photo_count": 0,
+              "is_nurse_tagged": true,
+              "date": 1793923502709,
+              "created_at": 1793872119272,
+              "updated_at": 1794510031177,
+              "photo_consent_timestamp": null
+            }
+          ],
+          "deleted": []
+        },
+        "nurses": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "patient_session_nurses": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "patients": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "ccp_sessions": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "follow_up_outcomes": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        }
+      },
+      "timestamp": 1794510033818
+    },
+    "bytes": 1121
+  }
+}

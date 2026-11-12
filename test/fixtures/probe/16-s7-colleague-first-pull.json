@@ -1,0 +1,199 @@
+{
+  "request": {
+    "url": "http://127.0.0.1:8765/api/v1/sync/?last_pulled_at=null&schema_version=3&migration=null",
+    "lastPulledAt": null,
+    "schemaVersion": 3,
+    "migration": null
+  },
+  "response": {
+    "status": 200,
+    "json": {
+      "changes": {
+        "patient_sessions": {
+          "created": [],
+          "updated": [
+            {
+              "id": "2a94f8ce-c7fe-4075-a370-1f704fef09e0",
+              "feedback": "device edit S5",
+              "location": "Hall",
+              "no_of_participants": 99,
+              "no_of_patients": 66,
+              "no_of_caregivers": 12,
+              "total_no_of_caregivers": 12,
+              "no_of_male_caregivers": 56,
+              "no_of_male_participants": null,
+              "no_of_estimated_res_signups": 25,
+              "no_of_anc_mothers": 83,
+              "no_of_pnc_mothers": 61,
+              "no_of_ncd_patients": null,
+              "condition_area": null,
+              "intervention_type": null,
+              "class_type": "c5c8651a-a959-406c-8dee-c7fc06113077",
+              "health_topic": null,
+              "supporting_activity": null,
+              "time_slot": null,
+              "created_by": "d5543032-cf9a-4ef6-859b-c1827544b494",
+              "session_photo_count": 0,
+              "res_photo_count": 0,
+              "is_nurse_tagged": false,
+              "date": 1793923502709,
+              "created_at": 1793872119272,
+              "updated_at": 1794510031177,
+              "photo_consent_timestamp": null
+            },
+            {
+              "id": "178473d6-e53d-4125-a089-31dc8ba28c3f",
+              "feedback": null,
+              "location": "Hall",
+              "no_of_participants": 23,
+              "no_of_patients": 68,
+              "no_of_caregivers": 26,
+              "total_no_of_caregivers": 26,
+              "no_of_male_caregivers": 44,
+              "no_of_male_participants": null,
+              "no_of_estimated_res_signups": 64,
+              "no_of_anc_mothers": 25,
+              "no_of_pnc_mothers": 55,
+              "no_of_ncd_patients": null,
+              "condition_area": null,
+              "intervention_type": null,
+              "class_type": "c5c8651a-a959-406c-8dee-c7fc06113077",
+              "health_topic": null,
+              "supporting_activity": null,
+              "time_slot": null,
+              "created_by": "bbcdf4cc-feb2-4258-8164-abcd3d485156",
+              "session_photo_count": 0,
+              "res_photo_count": 0,
+              "is_nurse_tagged": true,
+              "date": 1794250303681,
+              "created_at": 1794393776488,
+              "updated_at": 1794509214732,
+              "photo_consent_timestamp": null
+            },
+            {
+              "id": "42794746-415d-4754-a141-4ff6d1663747",
+              "feedback": null,
+              "location": "Hall",
+              "no_of_participants": 12,
+              "no_of_patients": 0,
+              "no_of_caregivers": 0,
+              "total_no_of_caregivers": 0,
+              "no_of_male_caregivers": null,
+              "no_of_male_participants": null,
+              "no_of_estimated_res_signups": 3,
+              "no_of_anc_mothers": null,
+              "no_of_pnc_mothers": null,
+              "no_of_ncd_patients": null,
+              "condition_area": null,
+              "intervention_type": null,
+              "class_type": "c5c8651a-a959-406c-8dee-c7fc06113077",
+              "health_topic": null,
+              "supporting_activity": null,
+              "time_slot": null,
+              "created_by": "d5543032-cf9a-4ef6-859b-c1827544b494",
+              "session_photo_count": 0,
+              "res_photo_count": 0,
+              "is_nurse_tagged": true,
+              "date": 1794510029709,
+              "created_at": 0,
+              "updated_at": 0,
+              "photo_consent_timestamp": null
+            }
+          ],
+          "deleted": []
+        },
+        "nurses": {
+          "created": [],
+          "updated": [
+            {
+              "id": "d5543032-cf9a-4ef6-859b-c1827544b494",
+              "name": "Renamed On Device",
+              "designation": "221820fb-2ac6-4440-b0e1-5f8539f8239b",
+              "facility": "42692ea2-2b11-4ccc-a9c3-b7e3dbdf416f",
+              "number": "+916820859518",
+              "condition_area": "3781c92f-0b5c-4eea-aa5e-8d7f1a328bfe",
+              "department": "3781c92f-0b5c-4eea-aa5e-8d7f1a328bfe",
+              "state": "tamil-nadu",
+              "province": null,
+              "account_status": "active",
+              "date_of_tot": 1794434293164,
+              "privacy_consent_timestamp": null,
+              "wa_consent_at": null,
+              "facility_type": "3baf75c1-bc7b-4067-9d23-cc6e3a50d1ce"
+            },
+            {
+              "id": "bbcdf4cc-feb2-4258-8164-abcd3d485156",
+              "name": "Vasana Sarraf",
+              "designation": "8391e097-58e7-4347-a070-f976484914b3",
+              "facility": "42692ea2-2b11-4ccc-a9c3-b7e3dbdf416f",
+              "number": "+917504811698",
+              "condition_area": "eb18678c-ae81-481e-98de-58b12822a322",
+              "department": "eb18678c-ae81-481e-98de-58b12822a322",
+              "state": "tamil-nadu",
+              "province": null,
+              "account_status": "active",
+              "date_of_tot": 1793983122137,
+              "privacy_consent_timestamp": null,
+              "wa_consent_at": null,
+              "facility_type": "3baf75c1-bc7b-4067-9d23-cc6e3a50d1ce"
+            }
+          ],
+          "deleted": []
+        },
+        "patient_session_nurses": {
+          "created": [],
+          "updated": [
+            {
+              "id": "588eff09-0814-4c05-a262-fb4216991133",
+              "session_id": "42794746-415d-4754-a141-4ff6d1663747",
+              "nurse_id": "d5543032-cf9a-4ef6-859b-c1827544b494"
+            },
+            {
+              "id": "5f2f6429-eb28-436d-ac85-52384cc1e877",
+              "session_id": "42794746-415d-4754-a141-4ff6d1663747",
+              "nurse_id": "bbcdf4cc-feb2-4258-8164-abcd3d485156"
+            },
+            {
+              "id": "7f87c8d8-692a-4998-931c-b91dd18ea914",
+              "session_id": "2a94f8ce-c7fe-4075-a370-1f704fef09e0",
+              "nurse_id": "d5543032-cf9a-4ef6-859b-c1827544b494"
+            },
+            {
+              "id": "da7baba8-ee66-4c87-81c1-553229177b4d",
+              "session_id": "414c81c8-c914-40db-8974-0a7db883c60d",
+              "nurse_id": "bbcdf4cc-feb2-4258-8164-abcd3d485156"
+            },
+            {
+              "id": "38930c8e-5366-42da-8968-4cb72776e683",
+              "session_id": "414c81c8-c914-40db-8974-0a7db883c60d",
+              "nurse_id": "d5543032-cf9a-4ef6-859b-c1827544b494"
+            },
+            {
+              "id": "2b380e51-4c58-4bc8-9687-5f89fc47bac6",
+              "session_id": "178473d6-e53d-4125-a089-31dc8ba28c3f",
+              "nurse_id": "bbcdf4cc-feb2-4258-8164-abcd3d485156"
+            }
+          ],
+          "deleted": []
+        },
+        "patients": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "ccp_sessions": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "follow_up_outcomes": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        }
+      },
+      "timestamp": 1794510034058
+    },
+    "bytes": 4450
+  }
+}

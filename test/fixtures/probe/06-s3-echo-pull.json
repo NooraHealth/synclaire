@@ -1,0 +1,109 @@
+{
+  "request": {
+    "url": "http://127.0.0.1:8765/api/v1/sync/?last_pulled_at=1794510029771&schema_version=3&migration=null",
+    "lastPulledAt": 1794510029771,
+    "schemaVersion": 3,
+    "migration": null
+  },
+  "response": {
+    "status": 200,
+    "json": {
+      "changes": {
+        "patient_sessions": {
+          "created": [],
+          "updated": [
+            {
+              "id": "42794746-415d-4754-a141-4ff6d1663747",
+              "feedback": null,
+              "location": "Hall",
+              "no_of_participants": 12,
+              "no_of_patients": 0,
+              "no_of_caregivers": 0,
+              "total_no_of_caregivers": 0,
+              "no_of_male_caregivers": null,
+              "no_of_male_participants": null,
+              "no_of_estimated_res_signups": 3,
+              "no_of_anc_mothers": null,
+              "no_of_pnc_mothers": null,
+              "no_of_ncd_patients": null,
+              "condition_area": null,
+              "intervention_type": null,
+              "class_type": "c5c8651a-a959-406c-8dee-c7fc06113077",
+              "health_topic": null,
+              "supporting_activity": null,
+              "time_slot": null,
+              "created_by": "d5543032-cf9a-4ef6-859b-c1827544b494",
+              "session_photo_count": 0,
+              "res_photo_count": 0,
+              "is_nurse_tagged": true,
+              "date": 1794510029709,
+              "created_at": 0,
+              "updated_at": 0,
+              "photo_consent_timestamp": null
+            }
+          ],
+          "deleted": [
+            "7c057257-80c9-44a1-9f75-b285362f24cf"
+          ]
+        },
+        "nurses": {
+          "created": [],
+          "updated": [
+            {
+              "id": "d5543032-cf9a-4ef6-859b-c1827544b494",
+              "name": "Renamed On Device",
+              "designation": "221820fb-2ac6-4440-b0e1-5f8539f8239b",
+              "facility": "42692ea2-2b11-4ccc-a9c3-b7e3dbdf416f",
+              "number": "+916820859518",
+              "condition_area": "3781c92f-0b5c-4eea-aa5e-8d7f1a328bfe",
+              "department": "3781c92f-0b5c-4eea-aa5e-8d7f1a328bfe",
+              "state": "tamil-nadu",
+              "province": null,
+              "account_status": "active",
+              "date_of_tot": 1794434293164,
+              "privacy_consent_timestamp": null,
+              "wa_consent_at": null,
+              "facility_type": "3baf75c1-bc7b-4067-9d23-cc6e3a50d1ce"
+            }
+          ],
+          "deleted": []
+        },
+        "patient_session_nurses": {
+          "created": [],
+          "updated": [
+            {
+              "id": "588eff09-0814-4c05-a262-fb4216991133",
+              "session_id": "42794746-415d-4754-a141-4ff6d1663747",
+              "nurse_id": "d5543032-cf9a-4ef6-859b-c1827544b494"
+            },
+            {
+              "id": "5f2f6429-eb28-436d-ac85-52384cc1e877",
+              "session_id": "42794746-415d-4754-a141-4ff6d1663747",
+              "nurse_id": "bbcdf4cc-feb2-4258-8164-abcd3d485156"
+            }
+          ],
+          "deleted": [
+            "dd8c46b3-e4e9-422b-983f-65693de9cbdf"
+          ]
+        },
+        "patients": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "ccp_sessions": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        },
+        "follow_up_outcomes": {
+          "created": [],
+          "updated": [],
+          "deleted": []
+        }
+      },
+      "timestamp": 1794510029893
+    },
+    "bytes": 1966
+  }
+}

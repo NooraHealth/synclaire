@@ -1,0 +1,49 @@
+{
+  "request": {
+    "url": "http://127.0.0.1:8765/api/v1/sync/?last_pulled_at=1794510034112",
+    "lastPulledAt": 1794510034112,
+    "body": {
+      "patient_sessions": {
+        "created": [],
+        "updated": [
+          {
+            "id": "42794746-415d-4754-a141-4ff6d1663747",
+            "_status": "updated",
+            "_changed": "feedback",
+            "date": 1794510029709,
+            "time_slot": "",
+            "created_at": 0,
+            "updated_at": 1794506434063,
+            "created_by": "d5543032-cf9a-4ef6-859b-c1827544b494",
+            "location": "Hall",
+            "class_type": "c5c8651a-a959-406c-8dee-c7fc06113077",
+            "no_of_participants": 12,
+            "no_of_estimated_res_signups": 3,
+            "no_of_patients": 0,
+            "no_of_caregivers": 0,
+            "session_photo_count": 0,
+            "feedback": "edit from a device whose clock is 1h behind"
+          }
+        ],
+        "deleted": []
+      },
+      "nurses": {
+        "created": [],
+        "updated": [],
+        "deleted": []
+      },
+      "patient_session_nurses": {
+        "created": [],
+        "updated": [],
+        "deleted": []
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "json": {
+      "status": "success"
+    },
+    "bytes": 20
+  }
+}
