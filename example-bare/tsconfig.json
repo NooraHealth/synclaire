@@ -1,0 +1,14 @@
+{
+  "extends": "@react-native/typescript-config",
+  "compilerOptions": {
+    "types": ["jest"],
+    "paths": {
+      "synclaire": ["../src/index.ts"],
+      "synclaire/*": ["../src/*"],
+      "react-native": ["./node_modules/react-native"],
+      "expo-file-system": ["./node_modules/expo-file-system"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", "../device-suite"],
+  "exclude": ["**/node_modules", "**/Pods"]
+}

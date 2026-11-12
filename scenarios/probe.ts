@@ -213,7 +213,7 @@ export async function runProbeScenarios(env: ScenarioEnv, schemaVersion: number)
         const r = await me.sync({ beforePush: async () => void (await env.control('bumpUpdatedAtAhead', S.own)) });
         check(!r.ok && (r.error ?? '').includes('push 400'), `push rejected with 400 (${r.error ?? 'ok'})`);
         check(await hasUnsyncedChanges({ database: me.db }), 'edit still pending after 400');
-        await new Promise(res => setTimeout(res, 1500));
+        await new Promise(res => setTimeout(() => res(undefined), 1500));
         await expectOk(me.sync(), 'retry');
         check(!(await hasUnsyncedChanges({ database: me.db })), 'retry pushed the edit');
       },

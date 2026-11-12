@@ -56,7 +56,8 @@
     "check": "npm run typecheck && npm run lint && npm run test",
     "fixtures:watermelon": "node --import tsx scripts/prepare-watermelon-fixture.ts",
     "example:control": "node --import tsx scripts/device-control-server.ts",
-    "example:ios": "bash scripts/run-example-ios.sh"
+    "example:ios": "bash scripts/run-example-ios.sh",
+    "example:bare:ios": "bash scripts/run-example-bare-ios.sh"
   },
   "peerDependencies": {
     "expo-sqlite": ">=15",

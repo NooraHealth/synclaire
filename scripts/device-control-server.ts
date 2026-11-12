@@ -99,11 +99,15 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (req.method === 'POST' && url.pathname === '/report') {
-      const report = (await readJson(req)) as { platform: string; name: string; ok?: boolean; lines?: string[] };
-      if (!NAME.test(report.platform) || !/^[a-z-]+$/.test(report.name)) return send(res, 400, { error: 'bad report' });
+      const report = (await readJson(req)) as { platform: string; name: string; prefix?: string; ok?: boolean; lines?: string[] };
+      const prefix = report.prefix ?? '';
+      if (!NAME.test(report.platform) || !/^[a-z-]+$/.test(report.name) || !/^[a-z]*$/.test(prefix)) {
+        return send(res, 400, { error: 'bad report' });
+      }
+      const file = `${prefix ? `${prefix}-` : ''}${report.platform}-${report.name}.json`;
       fs.mkdirSync(REPORT_DIR, { recursive: true });
-      fs.writeFileSync(path.join(REPORT_DIR, `${report.platform}-${report.name}.json`), JSON.stringify(report, null, 2));
-      console.log(`[report] ${report.platform} ${report.name}: ${report.ok === false ? 'FAIL' : 'ok'}`);
+      fs.writeFileSync(path.join(REPORT_DIR, file), JSON.stringify(report, null, 2));
+      console.log(`[report] ${prefix ? `${prefix} ` : ''}${report.platform} ${report.name}: ${report.ok === false ? 'FAIL' : 'ok'}`);
       for (const line of report.lines ?? []) console.log(`  ${line}`);
       return send(res, 200, { saved: true });
     }

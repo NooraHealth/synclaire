@@ -333,7 +333,8 @@ failing check.
 ```sh
 npm run check            # typecheck, lint, unit + differential tests
 npm run test:backend     # real hep-unified-backend (Docker Postgres + Django), India and Nepal
-npm run example:ios      # example app on the iOS simulator against the same backend
+npm run example:ios      # Expo example app on the iOS simulator against the same backend
+npm run example:bare:ios # the same checks in a bare React Native app, still on expo-sqlite
 npm run bench            # Node benchmarks vs WatermelonDB
 ```
 
@@ -375,6 +376,21 @@ npm run bench            # Node benchmarks vs WatermelonDB
     this machine has no Android emulator or system image. To run it, install them with
     `sdkmanager "emulator" "system-images;android-35;google_apis;arm64-v8a"`, create an AVD, then
     run `npx expo run:android` in `example/` with the control server started with `--autorun`.
+- **Bare React Native** (`example-bare/`, React Native 0.83, no Expo prebuild or dev client). It
+  runs the same checks as the Expo example. The screen and tasks live in `device-suite/` and both
+  apps import them. SQLite is still `expo-sqlite`, installed with the `expo` package the way a
+  bare app has to. Reports are `example/reports/bare-ios-*.json`, so they do not overwrite the
+  Expo app's reports.
+  - Hermes has no `crypto.randomUUID`. The entry file imports `react-native-get-random-values`
+    first, which is what `uuidv4` uses. Without that import, ids fall back to `Math.random`.
+  - `npm run example:bare:ios` reseeds the backend, builds a Release app (the JS bundle is
+    embedded) and runs it on a simulator.
+  - Verified: all five reports pass on the iPhone 17 Pro simulator (iOS 26.2) for India and Nepal.
+    `expo-sqlite` also needs `expo-asset`, which the app depends on directly.
+  - **Android** isn't verified. `android/app/src/main/res/xml/network_security_config.xml` allows
+    cleartext to `10.0.2.2` and `127.0.0.1`. With an emulator installed, run
+    `npx react-native run-android` in `example-bare/` and start the control server with
+    `--autorun`.
 
 ## Benchmarks
 
@@ -405,9 +421,11 @@ is the obvious next optimisation if on-device write throughput matters.
 
 ```
 src/            library: schema, migrations, db (Database, WriteTx), query, sync, react, expo, testing
-scenarios/      platform-neutral country schemas and backend probe scenarios (Node + example app)
+scenarios/      platform-neutral country schemas and backend probe scenarios (Node + device apps)
+device-suite/   on-device checks shared by the Expo example and the bare app
 test/           unit, differential, integration suites; fixtures (probe payloads, Watermelon oracle)
 bench/          Node benchmarks vs WatermelonDB
-scripts/        backend up/down, Watermelon fixture builder, device control server, iOS runner
+scripts/        backend up/down, Watermelon fixture builder, device control server, iOS runners
 example/        Expo dev-client app
+example-bare/   bare React Native app, still using expo-sqlite
 ```

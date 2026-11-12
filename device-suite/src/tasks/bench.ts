@@ -16,9 +16,9 @@ const PAGE_SIZE = 50;
 export async function runBenchmarks(log: (line: string) => void): Promise<BenchResult[]> {
   const results: BenchResult[] = [];
   const time = async (name: string, fn: () => Promise<unknown>) => {
-    const started = performance.now();
+    const started = Date.now();
     await fn();
-    const ms = Math.round(performance.now() - started);
+    const ms = Date.now() - started;
     results.push({ name, ms });
     log(`${String(ms).padStart(6)} ms  ${name}`);
   };

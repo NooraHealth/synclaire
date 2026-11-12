@@ -1,0 +1,8 @@
+{
+  "name": "SynclaireBare",
+  "displayName": "Synclaire Bare",
+  "plugins": [
+    "expo-sqlite",
+    "expo-asset"
+  ]
+}

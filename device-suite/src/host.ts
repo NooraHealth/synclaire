@@ -45,12 +45,16 @@ export async function control(backend: Backend, action: ControlAction, uuid: str
   return (await json<{ result: string }>(res)).result;
 }
 
-export async function report(name: string, body: { ok: boolean; lines: string[]; [k: string]: unknown }) {
+export async function report(
+  name: string,
+  body: { ok: boolean; lines: string[]; [k: string]: unknown },
+  prefix = '',
+) {
   try {
     await fetch(`${CONTROL_URL}/report`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ platform: PLATFORM, name, ...body }),
+      body: JSON.stringify({ ...body, platform: PLATFORM, name, prefix }),
     });
   } catch {
     // Reporting is best-effort; results are also shown on screen.
