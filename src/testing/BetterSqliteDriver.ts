@@ -10,21 +10,35 @@ function bind(params?: Params): unknown[] {
   return params ? (params as unknown[]) : [];
 }
 
+const STATEMENT_CACHE_SIZE = 256;
+
 function executorFor(db: BetterSqlite3.Database): SqlExecutor {
+  const cache = new Map<string, BetterSqlite3.Statement>();
+  const prepare = (sql: string) => {
+    let stmt = cache.get(sql);
+    if (!stmt) {
+      stmt = db.prepare(sql);
+      if (cache.size >= STATEMENT_CACHE_SIZE) cache.delete(cache.keys().next().value!);
+      cache.set(sql, stmt);
+    }
+    return stmt;
+  };
   return {
     async exec(sql: string) {
+      // DDL can invalidate cached statements (e.g. after a reset drops tables).
+      cache.clear();
       db.exec(sql);
     },
     async run(sql: string, params?: Params): Promise<RunResult> {
-      const info = db.prepare(sql).run(...bind(params));
+      const info = prepare(sql).run(...bind(params));
       return { changes: info.changes };
     },
     async all<T = SqlRow>(sql: string, params?: Params): Promise<T[]> {
-      const stmt = db.prepare(sql);
+      const stmt = prepare(sql);
       return (stmt.reader ? stmt.all(...bind(params)) : (stmt.run(...bind(params)), [])) as T[];
     },
     async first<T = SqlRow>(sql: string, params?: Params): Promise<T | null> {
-      const stmt = db.prepare(sql);
+      const stmt = prepare(sql);
       if (!stmt.reader) {
         stmt.run(...bind(params));
         return null;
