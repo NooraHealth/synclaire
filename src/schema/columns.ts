@@ -8,9 +8,6 @@ export interface ColumnSchema {
 }
 
 export class ColumnBuilder<T extends ColumnType = ColumnType, O extends boolean = boolean> {
-  /** Type-level marker only. */
-  declare readonly __optional: O;
-
   constructor(
     readonly type: T,
     readonly isOptional: O,

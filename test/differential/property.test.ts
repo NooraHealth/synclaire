@@ -190,7 +190,11 @@ describe('random interleavings agree with WatermelonDB', () => {
         }
         await scClient.db.close();
       }),
-      { numRuns: Number(process.env.SYNCLAIRE_PROPERTY_RUNS ?? 300), endOnFailure: true },
+      {
+        numRuns: Number(process.env.SYNCLAIRE_PROPERTY_RUNS ?? 300),
+        endOnFailure: true,
+        ...(process.env.SYNCLAIRE_PROPERTY_SEED ? { seed: Number(process.env.SYNCLAIRE_PROPERTY_SEED), path: process.env.SYNCLAIRE_PROPERTY_PATH } : {}),
+      },
     );
     console.info('[property] coverage', stats);
     for (const [event, count] of Object.entries(stats)) {

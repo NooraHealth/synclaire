@@ -110,9 +110,23 @@ export class WatermelonClient implements Client {
     );
   }
 
+  /**
+   * `collection.find` serves records from WatermelonDB's in-memory cache, which still holds records
+   * that sync has already purged from SQLite (pushed deletions). Synclaire has no such cache and
+   * reports them as not found, so look the row up in SQLite first.
+   */
+  private async find(table: string, id: string): Promise<any> {
+    const rows = await this.db
+      .get(table)
+      .query(wm.Q.unsafeSqlQuery(`select id from ${table} where id = ?`, [id]))
+      .unsafeFetchRaw();
+    if (!rows.length) throw new Error(`${table}#${id} not found`);
+    return this.db.get(table).find(id);
+  }
+
   async update(table: string, id: string, patch: Values) {
     await this.db.write(async () => {
-      const rec = await this.db.get(table).find(id);
+      const rec = await this.find(table, id);
       await rec.update((r: any) => {
         for (const [k, v] of Object.entries(patch)) r._setRaw(k, v);
       });
@@ -121,7 +135,7 @@ export class WatermelonClient implements Client {
 
   async markDeleted(table: string, id: string) {
     await this.db.write(async () => {
-      const rec = await this.db.get(table).find(id);
+      const rec = await this.find(table, id);
       await rec.markAsDeleted();
     });
   }
@@ -135,7 +149,7 @@ export class WatermelonClient implements Client {
 
   async destroyPermanently(table: string, id: string) {
     await this.db.write(async () => {
-      const rec = await this.db.get(table).find(id);
+      const rec = await this.find(table, id);
       await rec.destroyPermanently();
     });
   }

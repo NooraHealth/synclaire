@@ -117,6 +117,19 @@ describe('update and _changed', () => {
     await expect(db.write(tx => tx.update('patient_sessions', 's', { feedback: 'z' }))).rejects.toBeInstanceOf(
       DeletedRecordError,
     );
+    // Sessions stamp updated_at, so even an empty patch sets a column.
+    await expect(db.write(tx => tx.update('patient_sessions', 's', {}))).rejects.toBeInstanceOf(DeletedRecordError);
+  });
+
+  it('treats an empty update of a deleted row without timestamps as a no-op, like WatermelonDB', async () => {
+    const { db, driver } = await syncedSession();
+    await db.write(tx => tx.insert('patient_session_nurses', { id: 'l', session_id: 's', nurse_id: 'n' }));
+    await driver.run(`update patient_session_nurses set _status = 'deleted', _changed = '' where id = 'l'`);
+    const row = await db.write(tx => tx.update('patient_session_nurses', 'l', {}));
+    expect(row.syncStatus).toBe('deleted');
+    await expect(db.write(tx => tx.update('patient_session_nurses', 'l', { nurse_id: 'm' }))).rejects.toBeInstanceOf(
+      DeletedRecordError,
+    );
   });
 });
 

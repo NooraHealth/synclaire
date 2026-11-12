@@ -10,3 +10,5 @@ example/ios/
 example/android/
 example/.expo/
 example/node_modules/
+example/fixtures/
+example/reports/

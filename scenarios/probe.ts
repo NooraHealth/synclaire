@@ -143,10 +143,17 @@ export async function runProbeScenarios(env: ScenarioEnv, schemaVersion: number)
       run: async () => {
         await me.open(`me-${suffix}`);
         await expectOk(me.sync(), 'first sync');
-        const ids = (await me.db.query('patient_sessions')).map(r => r.id);
-        check(sameSet(ids, [S.own, S.own2, S.tagged_by_colleague]), `sessions ${ids.join(',')}`);
+        // Other runs (e.g. the example app's in-place check) may have pushed extra sessions for this
+        // nurse, so check the seeded ones rather than the exact set.
+        const seeded = [S.own, S.own2, S.tagged_by_colleague];
+        const ids = (await me.db.query('patient_sessions', Q.where('id', Q.oneOf([...seeded, S.not_mine, S.deleted])))).map(r => r.id);
+        check(sameSet(ids, seeded), `sessions ${ids.join(',')}`);
         check((await me.db.count('nurses')) === 2, 'two nurses');
-        check((await me.db.count('patient_session_nurses')) === 6, 'six session-nurse links');
+        // Five links on the seeded sessions plus a dangling link to the soft-deleted session, which
+        // the backend still sends (WatermelonDB saw the same six).
+        const links = await me.db.count('patient_session_nurses', Q.where('session_id', Q.oneOf([...seeded, S.deleted])));
+        check(links === 6, `six session-nurse links (${links})`);
+        check((await me.db.get('patient_sessions', S.deleted)) === null, 'soft-deleted session not sent');
         check(me.pulledTables[0]!.includes('patients'), 'server sends unknown tables, which are skipped');
         check(
           (await me.db.localStorage.get('__watermelon_last_pulled_schema_version')) === String(schemaVersion),

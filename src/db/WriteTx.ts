@@ -108,7 +108,12 @@ export class WriteTx<S extends Schema> {
     const t = this.table(table);
     const raw = await getRaw(this.ex, t, id);
     if (!raw) throw new RecordNotFoundError(table, id);
-    if (raw._status === 'deleted') throw new DeletedRecordError(table, id);
+    const entries = Object.entries(patch as Record<string, unknown>).filter(([, v]) => v !== undefined);
+    if (raw._status === 'deleted') {
+      // As in WatermelonDB, only setting a column is refused; an update that sets nothing is a no-op.
+      if (t.timestamps.updatedAt || entries.length) throw new DeletedRecordError(table, id);
+      return toRow<Row<S, T>>(raw, t);
+    }
 
     const set = (column: string, value: unknown): void => {
       const c = t.columnMap.get(column);
@@ -119,9 +124,7 @@ export class WriteTx<S extends Schema> {
     };
 
     if (t.timestamps.updatedAt) set('updated_at', this.options.now());
-    for (const [k, v] of Object.entries(patch as Record<string, unknown>)) {
-      if (v !== undefined) set(k, v);
-    }
+    for (const [k, v] of entries) set(k, v);
     await updateRaw(this.ex, t, raw);
     this.changedTables.add(table);
     return toRow<Row<S, T>>(raw, t);

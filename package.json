@@ -53,7 +53,10 @@
     "test:differential": "vitest run --project differential",
     "test:backend": "bash scripts/backend-up.sh && vitest run --project backend",
     "bench": "node --import tsx bench/run.ts",
-    "check": "npm run typecheck && npm run lint && npm run test"
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "fixtures:watermelon": "node --import tsx scripts/prepare-watermelon-fixture.ts",
+    "example:control": "node --import tsx scripts/device-control-server.ts",
+    "example:ios": "bash scripts/run-example-ios.sh"
   },
   "peerDependencies": {
     "expo-sqlite": ">=15",
