@@ -31,7 +31,8 @@
     },
     "plugins": [
       "expo-sqlite",
-      "expo-asset"
+      "expo-asset",
+      "./plugins/withCleartextTraffic"
     ],
     "scheme": "synclaire-example"
   }
