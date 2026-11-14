@@ -1,4 +1,5 @@
-import { Directory, File, Paths } from 'expo-file-system';
+import { File, Paths } from 'expo-file-system';
+import { deleteDatabaseAsync, openDatabaseAsync } from 'expo-sqlite';
 import { hasUnsyncedChanges, Q } from 'synclaire';
 import { watermelonDatabaseLocation } from 'synclaire/expo';
 
@@ -20,6 +21,35 @@ export interface CheckResult {
   detail?: string;
 }
 
+function stripFileScheme(uri: string) {
+  return uri.startsWith('file://') ? decodeURI(uri.slice('file://'.length)) : uri;
+}
+
+/**
+ * expo-file-system only allows writes under files/ and cache/. WatermelonDB on Android
+ * keeps the database in the app data directory, the parent of files/. Download into
+ * cache, then let SQLite write the file into place.
+ */
+async function placeWatermelonFile(url: string, directory: string, databaseName: string) {
+  const cached = new File(Paths.cache, databaseName);
+  if (cached.exists) cached.delete();
+  await File.downloadFileAsync(url, cached);
+  try {
+    await deleteDatabaseAsync(databaseName, directory);
+  } catch {
+    // No previous file at the WatermelonDB location.
+  }
+  const cacheDir = stripFileScheme(Paths.cache.uri);
+  const src = await openDatabaseAsync(databaseName, {}, cacheDir);
+  try {
+    const target = `${directory}/${databaseName}`.replace(/'/g, "''");
+    await src.execAsync(`VACUUM INTO '${target}'`);
+  } finally {
+    await src.closeAsync();
+    if (cached.exists) cached.delete();
+  }
+}
+
 /**
  * Puts a WatermelonDB-generated file (synced, with unpushed local changes) exactly where
  * WatermelonDB's native adapter keeps it, opens it with Synclaire and syncs.
@@ -38,14 +68,7 @@ export async function runInPlaceCheck(backend: Backend, log: (line: string) => v
     documentDirectory: Paths.document.uri,
   });
   log(`placing fixture at ${location.directory}/${location.databaseName}`);
-
-  const dir = new Directory(`file://${location.directory}`);
-  if (!dir.exists) dir.create({ intermediates: true, idempotent: true });
-  for (const suffix of ['', '-wal', '-shm', '-journal']) {
-    const f = new File(dir, `${location.databaseName}${suffix}`);
-    if (f.exists) f.delete();
-  }
-  await File.downloadFileAsync(`${CONTROL_URL}/fixture/${backend.key}.db`, new File(dir, location.databaseName));
+  await placeWatermelonFile(`${CONTROL_URL}/fixture/${backend.key}.db`, location.directory, location.databaseName);
 
   const db = await openAppDatabase({
     code: backend.code,
