@@ -333,9 +333,11 @@ failing check.
 ```sh
 npm run check            # typecheck, lint, unit + differential tests
 npm run test:backend     # real hep-unified-backend (Docker Postgres + Django), India and Nepal
-npm run example:ios      # Expo example app on the iOS simulator against the same backend
-npm run example:bare:ios # the same checks in a bare React Native app, still on expo-sqlite
-npm run bench            # Node benchmarks vs WatermelonDB
+npm run example:ios          # Expo example app on the iOS simulator against the same backend
+npm run example:android      # the same checks on an Android emulator
+npm run example:bare:ios     # the same checks in a bare React Native app, still on expo-sqlite
+npm run example:bare:android # the bare app on an Android emulator
+npm run bench                # Node benchmarks vs WatermelonDB
 ```
 
 - **Unit tests** cover the drivers, schema and DDL, migrations, writes, queries, sync and the
@@ -371,11 +373,16 @@ npm run bench            # Node benchmarks vs WatermelonDB
     the JavaScript is embedded and no dev-client prompt appears. For interactive use, run
     `npx expo run:ios` in `example/`.
   - Verified: all checks pass on the iPhone 17 Pro simulator (iOS 26.2) for India and Nepal.
-  - **Android** isn't verified yet. The app is configured for it: the host is `10.0.2.2` and
-    cleartext traffic to the local backend is allowed. The Android JavaScript bundle builds, but
-    this machine has no Android emulator or system image. To run it, install them with
-    `sdkmanager "emulator" "system-images;android-35;google_apis;arm64-v8a"`, create an AVD, then
-    run `npx expo run:android` in `example/` with the control server started with `--autorun`.
+  - `npm run example:android` boots `Pixel_API_34` when no device is online (`ANDROID_AVD` to
+    override), reseeds the backend, builds a Release APK for `arm64-v8a` (`ANDROID_ABIS` to
+    override) and waits for `example/reports/android-*.json`.
+  - Verified: all five reports pass on the Pixel API 34 emulator (arm64) for India and Nepal.
+  - The emulator reaches the host as `10.0.2.2`. Django's local `ALLOWED_HOSTS` includes that
+    name. Prebuild does not apply `android.usesCleartextTraffic`, so
+    `example/plugins/withCleartextTraffic.js` sets it on the release manifest.
+  - expo-file-system only writes under `files/` and `cache/`. The WatermelonDB file on Android
+    lives in the app data directory, the parent of `files/`. The check downloads the fixture
+    into cache and has SQLite write it into place with `VACUUM INTO`.
 - **Bare React Native** (`example-bare/`, React Native 0.83, no Expo prebuild or dev client). It
   runs the same checks as the Expo example. The screen and tasks live in `device-suite/` and both
   apps import them. SQLite is still `expo-sqlite`, installed with the `expo` package the way a
@@ -387,10 +394,12 @@ npm run bench            # Node benchmarks vs WatermelonDB
     embedded) and runs it on a simulator.
   - Verified: all five reports pass on the iPhone 17 Pro simulator (iOS 26.2) for India and Nepal.
     `expo-sqlite` also needs `expo-asset`, which the app depends on directly.
-  - **Android** isn't verified. `android/app/src/main/res/xml/network_security_config.xml` allows
-    cleartext to `10.0.2.2` and `127.0.0.1`. With an emulator installed, run
-    `npx react-native run-android` in `example-bare/` and start the control server with
-    `--autorun`.
+  - `npm run example:bare:android` is the same run as the Expo Android script. Reports are
+    `example/reports/bare-android-*.json`.
+  - `android/app/src/main/res/xml/network_security_config.xml` allows cleartext to `10.0.2.2`
+    and `127.0.0.1`. Release builds turn the global cleartext flag off; that domain list is
+    what the emulator uses.
+  - Verified: all five reports pass on the Pixel API 34 emulator (arm64) for India and Nepal.
 
 ## Benchmarks
 
@@ -414,6 +423,15 @@ On the iOS simulator through expo-sqlite (example app, Release build):
 | 100 pages of 50 sessions sorted by date | ~450 |
 | Count sessions joined to a nurse (`Q.on`) | ~470 |
 
+One Release run on the Pixel API 34 emulator, through expo-sqlite (example app):
+
+| Case | ms |
+| --- | ---: |
+| Insert 2,000 sessions in one write | 5,107 |
+| First pull: 5,000 sessions + 5,000 links | 23,442 |
+| 100 pages of 50 sessions sorted by date | 2,294 |
+| Count sessions joined to a nurse (`Q.on`) | 2,005 |
+
 The expo driver doesn't cache prepared statements yet; the Node driver does. Adding a cache there
 is the obvious next optimisation if on-device write throughput matters.
 
@@ -425,7 +443,7 @@ scenarios/      platform-neutral country schemas and backend probe scenarios (No
 device-suite/   on-device checks shared by the Expo example and the bare app
 test/           unit, differential, integration suites; fixtures (probe payloads, Watermelon oracle)
 bench/          Node benchmarks vs WatermelonDB
-scripts/        backend up/down, Watermelon fixture builder, device control server, iOS runners
+scripts/        backend up/down, Watermelon fixture builder, device control server, iOS and Android runners
 example/        Expo dev-client app
 example-bare/   bare React Native app, still using expo-sqlite
 ```
