@@ -1,6 +1,6 @@
 # Synclaire progress
 
-14 November 2026. The library is built and checked against WatermelonDB 0.27.1 and the hep backend, on the iOS simulator and an Android emulator. Replacing WatermelonDB inside hep-unified-frontend has not started.
+14 November 2026. The library is built and checked against WatermelonDB 0.27.1 and the hep backend, on the iOS simulator and an Android emulator. Replacing WatermelonDB inside hep-unified-frontend is in progress, with Synclaire linked as `portal:../synclaire` until it is on npm.
 
 ## Implemented
 
@@ -23,7 +23,7 @@ Deliberate differences from WatermelonDB, kept on purpose:
 
 - **A physical Android phone.** The emulator reaches the host as `10.0.2.2`. A phone on the network cannot use that address.
 - **Backend scenarios for Bangladesh and Indonesia.** The schema round-trip covers all four countries. The live backend suite has only been run for India and Nepal.
-- **Frontend migration.** Swap hep-unified-frontend off WatermelonDB onto Synclaire. Out of scope until this library work is accepted.
+- **Frontend migration.** In progress. hep-unified-frontend's code, tests, CI and EAS now use Synclaire, and WatermelonDB is removed. Left: the upgrade-in-place check on devices (install the current store build, record sessions offline, upgrade, confirm they are listed and push), then publish Synclaire to npm and replace the portal link.
 - **Backend fixes.** The clock, untagged-session, remote-delete, and pull-timestamp issues are in hep-unified-backend. Synclaire matches WatermelonDB's current behaviour so a backend fix will show up as a failing scenario.
 - **On-device write speed.** The Node driver caches prepared statements. The expo-sqlite driver does not.
 
