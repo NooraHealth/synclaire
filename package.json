@@ -55,6 +55,7 @@
     "bench": "node --import tsx bench/run.ts",
     "check": "npm run typecheck && npm run lint && npm run test",
     "fixtures:watermelon": "node --import tsx scripts/prepare-watermelon-fixture.ts",
+    "fixtures:frontend": "node --import tsx scripts/export-frontend-fixtures.ts",
     "example:control": "node --import tsx scripts/device-control-server.ts",
     "example:ios": "bash scripts/run-example-ios.sh",
     "example:android": "bash scripts/run-example-android.sh",
