@@ -9,6 +9,11 @@ import type { TableDefinition } from '../src/schema/defineSchema';
 
 export type CountryCode = 'in' | 'bd' | 'id' | 'np';
 
+/** Session count column shared by Synclaire schema and Django for probe S2/S4. */
+export function sessionCountColumn(code: CountryCode): 'no_of_patients' | 'no_of_participants' {
+  return code === 'id' ? 'no_of_participants' : 'no_of_patients';
+}
+
 export interface ColSpec {
   name: string;
   type: ColumnType;

@@ -17,6 +17,7 @@ import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { sessionCountColumn, type CountryCode } from '../scenarios/countries';
 import { controlSql, type ControlAction } from '../scenarios/probe';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -84,7 +85,9 @@ const server = http.createServer(async (req, res) => {
       const state = states()[parts[1]!];
       if (!state) return send(res, 404, { error: 'unknown country' });
       const { action, uuid } = (await readJson(req)) as { action: ControlAction; uuid: string };
-      const sql = controlSql(action, uuid);
+      const code = CODES[parts[1]!] as CountryCode | undefined;
+      if (!code) return send(res, 404, { error: 'unknown country' });
+      const sql = controlSql(action, uuid, sessionCountColumn(code));
       const out = execFileSync('docker', ['exec', state.container, 'psql', '-U', 'postgres', '-d', state.database, '-tAc', sql])
         .toString()
         .trim();

@@ -17,26 +17,40 @@ export interface BackendSeed {
 /** Server-side edits a device cannot make itself; each maps to one fixed SQL statement. */
 export type ControlAction = 'setPatients99' | 'bumpUpdatedAtAhead' | 'softDelete' | 'readSession';
 
-export const CONTROL_SQL: Record<ControlAction, (uuid: string) => string> = {
-  setPatients99: uuid =>
-    `update app_backend_patienttrainingsession set no_of_patients=99, updated_at=now() where uuid='${uuid}'`,
-  bumpUpdatedAtAhead: uuid =>
-    `update app_backend_patienttrainingsession set updated_at=now() + interval '1 second' where uuid='${uuid}'`,
-  softDelete: uuid =>
-    `update app_backend_patienttrainingsession set is_deleted=true, deleted_at=now() where uuid='${uuid}'`,
-  readSession: uuid =>
-    `select coalesce(no_of_patients::text, '') || '|' || coalesce(feedback, '') from app_backend_patienttrainingsession where uuid='${uuid}'`,
-};
+/** Column used for S2 insert / S4 merge. Indonesia's client schema has no `no_of_patients`. */
+export type SessionCountColumn = 'no_of_patients' | 'no_of_participants';
 
+const COUNT_COLUMNS = new Set<SessionCountColumn>(['no_of_patients', 'no_of_participants']);
 const UUID = /^[0-9a-f-]{36}$/i;
-export function controlSql(action: ControlAction, uuid: string): string {
-  if (!UUID.test(uuid) || !(action in CONTROL_SQL)) throw new Error('invalid control request');
-  return CONTROL_SQL[action](uuid);
+
+export function controlSql(
+  action: ControlAction,
+  uuid: string,
+  countColumn: SessionCountColumn = 'no_of_patients',
+): string {
+  if (!UUID.test(uuid) || !COUNT_COLUMNS.has(countColumn)) throw new Error('invalid control request');
+  switch (action) {
+    case 'setPatients99':
+      return `update app_backend_patienttrainingsession set ${countColumn}=99, updated_at=now() where uuid='${uuid}'`;
+    case 'bumpUpdatedAtAhead':
+      return `update app_backend_patienttrainingsession set updated_at=now() + interval '1 second' where uuid='${uuid}'`;
+    case 'softDelete':
+      return `update app_backend_patienttrainingsession set is_deleted=true, deleted_at=now() where uuid='${uuid}'`;
+    case 'readSession':
+      return `select coalesce(${countColumn}::text, '') || '|' || coalesce(feedback, '') from app_backend_patienttrainingsession where uuid='${uuid}'`;
+    default:
+      throw new Error('invalid control request');
+  }
 }
 
 export interface ScenarioEnv {
   baseUrl: string;
   seed: BackendSeed;
+  /**
+   * Numeric session column present in both this country's Synclaire schema and the Django model.
+   * Defaults to `no_of_patients` (India, Nepal, Bangladesh). Indonesia uses `no_of_participants`.
+   */
+  countColumn?: SessionCountColumn;
   /** Opens a fresh database for one device. `now` must be used as the database clock. */
   openDatabase: (name: string, now: () => number) => Promise<Database<Schema>>;
   control: (action: ControlAction, uuid: string) => Promise<string>;
@@ -125,6 +139,7 @@ type Step = { name: string; run: () => Promise<void> };
 /** Runs all scenarios in order (they build on each other) and reports each step. */
 export async function runProbeScenarios(env: ScenarioEnv, schemaVersion: number): Promise<ScenarioResult[]> {
   const { seed } = env;
+  const countColumn = env.countColumn ?? 'no_of_patients';
   const S = seed.sessions;
   const suffix = uuidv4().slice(0, 8);
   const me = new Device(env, seed.token);
@@ -170,7 +185,7 @@ export async function runProbeScenarios(env: ScenarioEnv, schemaVersion: number)
             date: Date.now(),
             class_type: seed.class_type,
             created_by: seed.me,
-            no_of_patients: 4,
+            [countColumn]: 4,
           });
           for (const nurse of [seed.me, seed.colleague]) {
             await tx.insert('patient_session_nurses', { session_id: newId, nurse_id: nurse });
@@ -202,7 +217,10 @@ export async function runProbeScenarios(env: ScenarioEnv, schemaVersion: number)
         const r = await expectOk(me.sync(), 'merge sync');
         check(r.log.resolvedConflicts?.length === 1, 'one resolved conflict logged');
         const row = await me.db.find('patient_sessions', S.own);
-        check(row.no_of_patients === 99 && row.feedback === 'device edit S4' && row.syncStatus === 'synced', 'merged row');
+        check(
+          row[countColumn] === 99 && row.feedback === 'device edit S4' && row.syncStatus === 'synced',
+          'merged row',
+        );
         check((await env.control('readSession', S.own)) === '99|device edit S4', 'server row merged');
       },
     },

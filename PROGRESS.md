@@ -1,31 +1,54 @@
 # Synclaire progress
 
-14 November 2026. The library is built and checked against WatermelonDB 0.27.1 and the hep backend, on the iOS simulator and an Android emulator. Replacing WatermelonDB inside hep-unified-frontend is in progress. The frontend installs a tarball packed from this checkout (`yarn synclaire:pack` there) until Synclaire is on npm.
+22 November 2026. The library is built and checked against WatermelonDB 0.27.1 and the hep backend (iOS simulator + Android emulator). Backend probe scenarios S1–S8 pass for all four countries. hep-unified-frontend has replaced WatermelonDB with a vendored Synclaire tarball (`yarn synclaire:pack`). Frontend Jest CI is green on Node 22. Remaining work is device E2E/upgrade gates, npm publish, and a few library/backend follow-ups.
 
-## Implemented
+## Library
 
-- Local database on expo-sqlite: schema, migrations, typed queries, writes, sync, and React hooks. Rows are plain frozen objects. The query builder is ours.
-- Same sync wire format and SQLite file layout as WatermelonDB, including `local_storage` and `PRAGMA user_version`. An existing Watermelon file opens in place, pending changes included.
-- Node driver (`better-sqlite3`) for tests and benchmarks. The Expo driver is what the apps use.
-- Tests: unit, differential and property tests against WatermelonDB, file round-trips for India, Bangladesh, Indonesia and Nepal, and scenarios S1–S8 against the real backend for India and Nepal.
-- Expo example app and a bare React Native 0.83 app. Both run the same checks through `device-suite/` and `expo-sqlite`. Verified on the iOS simulator and on the Pixel API 34 emulator (arm64): in-place open, S1–S8, and on-device benchmarks, for India and Nepal.
-- Node benchmarks against WatermelonDB. Synclaire is faster on every case measured (5,000-record pull, 1,000 local inserts, pushing those changes, paged queries).
-- README: API, WatermelonDB call mapping, deliberate differences, and the known backend issues (device-clock `updated_at`, untagged sessions, remote delete overriding local edits, pull timestamp race).
+- [x] Local database on expo-sqlite: schema, migrations, typed queries, writes, sync, React hooks
+- [x] Same sync wire format and SQLite layout as WatermelonDB (`local_storage`, `PRAGMA user_version`); Watermelon files open in place
+- [x] Node driver (`better-sqlite3`) for tests/benchmarks; Expo driver for apps
+- [x] Unit, differential and property tests vs WatermelonDB; file round-trips for IN / BD / ID / NP
+- [x] Backend scenarios S1–S8 against real hep backend for India, Nepal, Bangladesh, and Indonesia
+- [x] Expo example app + bare RN 0.83 app; device-suite verified on iOS simulator and Pixel API 34 emulator (IN + NP)
+- [x] Node benchmarks vs WatermelonDB (Synclaire faster on measured cases)
+- [x] README: API, WatermelonDB mapping, deliberate differences, known backend issues
+- [x] Frontend Watermelon fixtures exporter (`npm run fixtures:frontend`)
+- [ ] Physical Android phone (emulator uses `10.0.2.2`; a real device needs a reachable host address)
+- [ ] Cache prepared statements in the expo-sqlite driver (Node driver already does)
+- [ ] Publish Synclaire to npm (still private / vendored tarball)
 
-Deliberate differences from WatermelonDB, kept on purpose:
+Deliberate differences from WatermelonDB (kept on purpose):
 
-- `markDeleted` on a never-synced row deletes it immediately. `deleteCreatedImmediately: false` restores WatermelonDB's behaviour.
-- A second concurrent `synchronize` throws `SyncAlreadyRunningError`.
-- `onConflict` reports merges and remote deletes.
-- Error message text differs. There is no in-memory record cache.
+- [x] `markDeleted` on a never-synced row deletes immediately (`deleteCreatedImmediately: false` restores Watermelon)
+- [x] Second concurrent `synchronize` throws `SyncAlreadyRunningError`
+- [x] `onConflict` reports merges and remote deletes
+- [x] No in-memory record cache; error message text may differ
 
-## Left
+## Frontend migration (hep-unified-frontend)
 
-- **A physical Android phone.** The emulator reaches the host as `10.0.2.2`. A phone on the network cannot use that address.
-- **Backend scenarios for Bangladesh and Indonesia.** The schema round-trip covers all four countries. The live backend suite has only been run for India and Nepal.
-- **Frontend migration.** In progress. hep-unified-frontend's code, tests, CI and EAS now use Synclaire from a vendored tarball, and WatermelonDB is removed. Done in the frontend's Jest suite: the upgrade-in-place check (`src/model/upgradeInPlace.test.ts`, fixtures from `npm run fixtures:frontend`), plus writer, query and sync-provider integration tests. Left: the upgrade check on devices (install the current store build, record sessions offline, upgrade, confirm they are listed and push), then publish Synclaire to npm and replace the vendored tarball.
-- **Backend fixes.** The clock, untagged-session, remote-delete, and pull-timestamp issues are in hep-unified-backend. Synclaire matches WatermelonDB's current behaviour so a backend fix will show up as a failing scenario.
-- **On-device write speed.** The Node driver caches prepared statements. The expo-sqlite driver does not.
+- [x] Replace WatermelonDB with Synclaire in app code
+- [x] Vendor Synclaire as `file:./vendor/synclaire-*.tgz` (`yarn synclaire:pack`); no `SYNCLAIRE_TOKEN` / GitHub pack
+- [x] Metro → src, Jest/tsc → dist; `synclaire/testing` → BetterSqliteDriver; `better-sqlite3` as frontend devDependency
+- [x] Upgrade-in-place Jest (`src/model/upgradeInPlace.test.ts` + watermelon fixtures)
+- [x] Writer / query / SyncContextProvider integration tests
+- [x] Offline-database testing strategy doc (`docs/testing/offline-database.md`)
+- [x] Maestro mobile E2E scaffolding (`e2e/mobile/`: flows, seed, upgrade.sh, backends on 8775/8776)
+- [x] iOS Maestro flows verified locally (India + Nepal ports)
+- [x] CI Jest green on Node 22.23.2 (fixed better-sqlite3 SIGSEGV on Node 20; SyncContext timeouts under coverage)
+- [ ] Android Maestro E2E green (assembleDevelopmentRelease / CMake autolinking still failing)
+- [ ] Full iOS Maestro orchestrator run as a release gate
+- [ ] Device upgrade from main’s WatermelonDB build (`yarn e2e:mobile:upgrade`) on iOS and Android
+- [ ] Merge frontend PR; replace vendored tarball with npm package once Synclaire is published
+- [x] `validate-linear-branch` CI check (branch naming; unrelated to Synclaire)
+
+## Backend (hep-unified-backend)
+
+Known issues Synclaire currently matches WatermelonDB on — fixing them will fail a scenario until expected behaviour is updated:
+
+- [ ] Device-clock `updated_at`
+- [ ] Untagged sessions
+- [ ] Remote delete overriding local edits
+- [ ] Pull timestamp race
 
 ## What is in the project
 
@@ -50,7 +73,7 @@ Deliberate differences from WatermelonDB, kept on purpose:
 | `bench/run.ts` | Node timings versus WatermelonDB. `npm run bench` |
 | `example/` | Expo SDK 55 dev-client app. `npm run example:ios`, `npm run example:android` |
 | `example-bare/` | Bare React Native 0.83 app, still on `expo-sqlite`. `npm run example:bare:ios`, `npm run example:bare:android` |
-| `scripts/` | Backend up/down, Watermelon fixture builder, device control server (port 8799), the iOS and Android runners |
+| `scripts/` | Backend up/down, Watermelon fixture builder, frontend fixture export, device control server (port 8799), iOS/Android runners |
 | `README.md` | API, WatermelonDB mapping, differences, backend issues, how to run each check |
 
-Commands that are already wired up: `npm run check`, `npm run test:backend`, `npm run example:ios`, `npm run example:android`, `npm run example:bare:ios`, `npm run example:bare:android`, `npm run bench`.
+Commands: `npm run check`, `npm run test:backend`, `npm run fixtures:frontend`, `npm run example:ios`, `npm run example:android`, `npm run example:bare:ios`, `npm run example:bare:android`, `npm run bench`.
