@@ -3,7 +3,7 @@
  * (test/integration) and by the Expo example app on iOS/Android, so both run identical steps.
  * The expected outcomes are the ones WatermelonDB 0.27.1 produced against the real backend.
  */
-import { hasUnsyncedChanges, Q, synchronize, uuidv4, type Database, type Schema, type SyncLog } from '../src';
+import { hasUnsyncedChanges, Q, synchronize, uuidv4, type Database, type Schema, type SyncLog } from 'synclaire';
 
 export interface BackendSeed {
   token: string;

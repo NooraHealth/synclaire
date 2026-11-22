@@ -19,7 +19,11 @@
     "declaration": true,
     "types": [
       "node"
-    ]
+    ],
+    "paths": {
+      "synclaire": ["./src/index.ts"],
+      "synclaire/*": ["./src/*"]
+    }
   },
   "include": [
     "scripts",

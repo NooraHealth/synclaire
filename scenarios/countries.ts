@@ -3,9 +3,17 @@
  * turned into Synclaire schemas and migrations. Platform-neutral: used by the Node tests (which
  * also derive the WatermelonDB oracle from COUNTRY_SPECS) and by the Expo example app.
  */
-import { addColumns, col, defineMigrations, defineSchema, type Migrations, type Schema } from '../src';
-import type { ColumnBuilder, ColumnType } from '../src/schema/columns';
-import type { TableDefinition } from '../src/schema/defineSchema';
+import {
+  addColumns,
+  col,
+  defineMigrations,
+  defineSchema,
+  type ColumnBuilder,
+  type ColumnType,
+  type Migrations,
+  type Schema,
+  type TableDefinition,
+} from 'synclaire';
 
 export type CountryCode = 'in' | 'bd' | 'id' | 'np';
 
