@@ -12,7 +12,7 @@ BACKEND_DIR="${BACKEND_DIR:-$ROOT/../hep-unified-backend/hep_backend}"
 STATE_DIR="$ROOT/test/integration/.state"
 CONTAINER="${PG_CONTAINER:-synclaire-hep-pg}"
 PG_PORT="${PG_PORT:-55432}"
-COUNTRIES="${COUNTRIES:-India Nepal}"
+COUNTRIES="${COUNTRIES:-India Nepal Bangladesh Indonesia}"
 
 command -v docker >/dev/null || { echo "docker is required" >&2; exit 1; }
 command -v uv >/dev/null || { echo "uv is required (https://docs.astral.sh/uv/)" >&2; exit 1; }

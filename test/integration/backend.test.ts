@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
+import { sessionCountColumn } from '../../scenarios/countries';
 import { controlSql, runProbeScenarios, type BackendSeed, type ControlAction } from '../../scenarios/probe';
 import { openDatabase, type Schema } from '../../src';
 import { BetterSqliteDriver } from '../../src/testing';
@@ -48,10 +49,12 @@ describe.skipIf(!states.length).each(states)('real backend: %s', (key, state) =>
 
   it('passes the probe scenarios with two nurses', { timeout: 120_000 }, async () => {
     const lines: string[] = [];
+    const countColumn = sessionCountColumn(code);
     const results = await runProbeScenarios(
       {
         baseUrl: state.baseUrl,
         seed: state.seed,
+        countColumn,
         log: line => lines.push(line),
         openDatabase: (name, now) =>
           openDatabase({
@@ -70,7 +73,7 @@ describe.skipIf(!states.length).each(states)('real backend: %s', (key, state) =>
             '-d',
             state.database,
             '-tAc',
-            controlSql(action, uuid),
+            controlSql(action, uuid, countColumn),
           ])
             .toString()
             .trim(),

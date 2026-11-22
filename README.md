@@ -23,6 +23,7 @@ including their unpushed changes and last-pulled timestamp.
 - [Verification](#verification)
 - [Benchmarks](#benchmarks)
 - [Repository layout](#repository-layout)
+- [Code samples](./EXAMPLES.md) — copy-paste examples for schema, open, query, write, sync, React, and tests
 
 ## Setup
 
@@ -332,7 +333,7 @@ failing check.
 
 ```sh
 npm run check            # typecheck, lint, unit + differential tests
-npm run test:backend     # real hep-unified-backend (Docker Postgres + Django), India and Nepal
+npm run test:backend     # real hep-unified-backend (Docker Postgres + Django), all four countries
 npm run example:ios          # Expo example app on the iOS simulator against the same backend
 npm run example:android      # the same checks on an Android emulator
 npm run example:bare:ios     # the same checks in a bare React Native app, still on expo-sqlite
@@ -356,9 +357,11 @@ npm run bench                # Node benchmarks vs WatermelonDB
   - a WatermelonDB v1 file is migrated in place;
   - WatermelonDB opens a file that Synclaire created.
 - **Backend integration** (`scenarios/probe.ts`, `test/integration`): scenarios S1–S8 run with two
-  nurses against the real backend.
+  nurses against the real backend for India, Nepal, Bangladesh, and Indonesia.
   - `scripts/backend-up.sh` starts Postgres in Docker, migrates and seeds one database per
-    country, and runs the Django dev servers.
+    country (default: all four; override with `COUNTRIES="India Nepal"`), and runs the Django
+    dev servers (ports 8765–8768). Indonesia uses `no_of_participants` for the S2/S4 count
+    column because its client schema has no `no_of_patients`.
   - `scripts/backend-down.sh` stops them.
   - The backend checkout is expected at `../hep-unified-backend`; set `BACKEND_DIR` otherwise.
 - **Example app** (`example/`, Expo SDK 55, React Native 0.83): the app runs the same scenario
