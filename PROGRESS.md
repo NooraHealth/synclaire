@@ -38,7 +38,7 @@ Deliberate differences from WatermelonDB (kept on purpose):
 - [x] Android Maestro E2E green (India + Nepal; R8 off for local e2e, Sentry upload skipped)
 - [x] Full iOS Maestro orchestrator run as a release gate (India + Nepal)
 - [x] Device upgrade from main’s WatermelonDB build (`yarn e2e:mobile:upgrade`) on iOS and Android
-- [ ] Merge frontend PR; replace vendored tarball with npm package once Synclaire is published
+- [ ] Merge frontend PR #292 (ready for review; CI + local Maestro/upgrade gates green; awaiting `@hep-unified-frontend-owners`); replace vendored tarball with npm package once Synclaire is published
 - [x] `validate-linear-branch` CI check (branch naming; unrelated to Synclaire)
 
 ## Backend (hep-unified-backend)
