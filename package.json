@@ -1,5 +1,5 @@
 {
-  "name": "synclaire",
+  "name": "@noorahealth/synclaire",
   "version": "0.1.0",
   "description": "Offline-first local database and sync for React Native on expo-sqlite, wire- and file-compatible with WatermelonDB sync.",
   "license": "UNLICENSED",
