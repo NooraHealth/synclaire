@@ -1,6 +1,6 @@
 # Synclaire progress
 
-25 November 2026. The library is built and checked against WatermelonDB 0.27.1 and the hep backend (iOS simulator + Android emulator). Backend probe scenarios S1–S8 pass for all four countries. hep-unified-frontend has replaced WatermelonDB with a vendored Synclaire tarball (`yarn synclaire:pack`). Frontend Jest CI is green on Node 22. Device Maestro E2E (India + Nepal) and Watermelon→Synclaire upgrade gates are green on iOS simulator and Android emulator. Remaining work is npm publish, physical-device check, and a few library/backend follow-ups.
+25 November 2026. The library is built and checked against WatermelonDB 0.27.1 and the hep backend (iOS simulator + Android emulator). Backend probe scenarios S1–S8 pass for all four countries. Synclaire is published to npm as `@noorahealth/synclaire`; hep-unified-frontend depends on that package. Frontend Jest CI is green on Node 22. Device Maestro E2E (India + Nepal) and Watermelon→Synclaire upgrade gates are green on iOS simulator and Android emulator. Remaining work is merging the frontend PR, a physical-device check, and a few library/backend follow-ups.
 
 ## Library
 
@@ -15,7 +15,7 @@
 - [x] Frontend Watermelon fixtures exporter (`npm run fixtures:frontend`)
 - [ ] Physical Android phone (emulator uses `10.0.2.2`; a real device needs a reachable host address)
 - [ ] Cache prepared statements in the expo-sqlite driver (Node driver already does)
-- [ ] Publish Synclaire to npm (still private / vendored tarball)
+- [x] Publish Synclaire to npm (`@noorahealth/synclaire@0.1.0`)
 
 Deliberate differences from WatermelonDB (kept on purpose):
 
@@ -27,7 +27,7 @@ Deliberate differences from WatermelonDB (kept on purpose):
 ## Frontend migration (hep-unified-frontend)
 
 - [x] Replace WatermelonDB with Synclaire in app code
-- [x] Vendor Synclaire as `file:./vendor/synclaire-*.tgz` (`yarn synclaire:pack`); no `SYNCLAIRE_TOKEN` / GitHub pack
+- [x] Depend on `@noorahealth/synclaire` from npm (replaced the temporary `vendor/*.tgz` pack)
 - [x] Metro → src, Jest/tsc → dist; `synclaire/testing` → BetterSqliteDriver; `better-sqlite3` as frontend devDependency
 - [x] Upgrade-in-place Jest (`src/model/upgradeInPlace.test.ts` + watermelon fixtures)
 - [x] Writer / query / SyncContextProvider integration tests
@@ -38,7 +38,7 @@ Deliberate differences from WatermelonDB (kept on purpose):
 - [x] Android Maestro E2E green (India + Nepal; R8 off for local e2e, Sentry upload skipped)
 - [x] Full iOS Maestro orchestrator run as a release gate (India + Nepal)
 - [x] Device upgrade from main’s WatermelonDB build (`yarn e2e:mobile:upgrade`) on iOS and Android
-- [ ] Merge frontend PR #292 (ready for review; CI + local Maestro/upgrade gates green; awaiting `@hep-unified-frontend-owners`); replace vendored tarball with npm package once Synclaire is published
+- [ ] Merge frontend PR #292 (ready for review; CI + Maestro/upgrade green; npm dep wired; awaiting `@hep-unified-frontend-owners`)
 - [x] `validate-linear-branch` CI check (branch naming; unrelated to Synclaire)
 
 ## Backend (hep-unified-backend)
