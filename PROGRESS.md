@@ -1,6 +1,6 @@
 # Synclaire progress
 
-22 November 2026. The library is built and checked against WatermelonDB 0.27.1 and the hep backend (iOS simulator + Android emulator). Backend probe scenarios S1–S8 pass for all four countries. hep-unified-frontend has replaced WatermelonDB with a vendored Synclaire tarball (`yarn synclaire:pack`). Frontend Jest CI is green on Node 22. Remaining work is device E2E/upgrade gates, npm publish, and a few library/backend follow-ups.
+25 November 2026. The library is built and checked against WatermelonDB 0.27.1 and the hep backend (iOS simulator + Android emulator). Backend probe scenarios S1–S8 pass for all four countries. hep-unified-frontend has replaced WatermelonDB with a vendored Synclaire tarball (`yarn synclaire:pack`). Frontend Jest CI is green on Node 22. Device Maestro E2E (India + Nepal) and Watermelon→Synclaire upgrade gates are green on iOS simulator and Android emulator. Remaining work is npm publish, physical-device check, and a few library/backend follow-ups.
 
 ## Library
 
@@ -35,9 +35,9 @@ Deliberate differences from WatermelonDB (kept on purpose):
 - [x] Maestro mobile E2E scaffolding (`e2e/mobile/`: flows, seed, upgrade.sh, backends on 8775/8776)
 - [x] iOS Maestro flows verified locally (India + Nepal ports)
 - [x] CI Jest green on Node 22.23.2 (fixed better-sqlite3 SIGSEGV on Node 20; SyncContext timeouts under coverage)
-- [ ] Android Maestro E2E green (assembleDevelopmentRelease / CMake autolinking still failing)
-- [ ] Full iOS Maestro orchestrator run as a release gate
-- [ ] Device upgrade from main’s WatermelonDB build (`yarn e2e:mobile:upgrade`) on iOS and Android
+- [x] Android Maestro E2E green (India + Nepal; R8 off for local e2e, Sentry upload skipped)
+- [x] Full iOS Maestro orchestrator run as a release gate (India + Nepal)
+- [x] Device upgrade from main’s WatermelonDB build (`yarn e2e:mobile:upgrade`) on iOS and Android
 - [ ] Merge frontend PR; replace vendored tarball with npm package once Synclaire is published
 - [x] `validate-linear-branch` CI check (branch naming; unrelated to Synclaire)
 
